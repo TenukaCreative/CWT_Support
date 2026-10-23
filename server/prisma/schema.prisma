@@ -1,0 +1,517 @@
+// SupportDesk data model.
+// Tenancy: Organization -> Project -> (Tickets, FAQ, ...). Almost every tenant table carries a
+// projectId so the central scoping layer (Phase 2) can constrain queries with one predicate.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Enums ─────────────────────────────
+
+enum Role {
+  ADMIN
+  SUPPORT
+  CUSTOMER
+}
+
+enum UserStatus {
+  PENDING // registered, awaiting admin approval / email verification
+  ACTIVE
+  DEACTIVATED
+}
+
+enum EntityStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+// Fixed set: SLA policies, sorting and the UI all depend on the ordering, so an enum beats a table.
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CUSTOMER
+  RESOLVED
+  CLOSED
+  REOPENED
+}
+
+enum MessageType {
+  PUBLIC
+  INTERNAL_NOTE
+  SYSTEM
+}
+
+enum TicketEventType {
+  CREATED
+  STATUS_CHANGED
+  ASSIGNED
+  PRIORITY_CHANGED
+  CATEGORY_CHANGED
+  MERGED
+  REOPENED
+  SLA_WARNING
+  SLA_BREACHED
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum CannedReplyScope {
+  GLOBAL // visible to all staff
+  PROJECT // visible to staff of one project
+  PERSONAL // visible only to its author
+}
+
+enum AuthTokenType {
+  EMAIL_VERIFICATION
+  PASSWORD_RESET
+}
+
+enum NotificationType {
+  TICKET_CREATED
+  TICKET_ASSIGNED
+  TICKET_REPLY
+  TICKET_STATUS_CHANGED
+  TICKET_RESOLVED
+  SLA_WARNING
+  SLA_BREACHED
+  ACCOUNT_APPROVED
+}
+
+// ───────────────────────────── Identity & tenancy ─────────────────────────────
+
+model Organization {
+  id        String       @id @default(cuid())
+  name      String
+  domain    String?      @unique // used by the (feature-flagged) domain auto-join
+  status    EntityStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  projects    Project[]
+  users       User[]
+  invitations Invitation[]
+}
+
+model Project {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  key            String       @unique // e.g. ACME-WEB; prefix of ticket numbers, so globally unique
+  description    String?
+  status         EntityStatus @default(ACTIVE)
+  // Last issued ticket sequence. Incremented with an atomic UPDATE inside the ticket-creation
+  // transaction; the row lock serialises concurrent creators, so numbers never collide.
+  ticketSeq      Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  members      ProjectMember[]
+  tickets      Ticket[]
+  categories   Category[]
+  faqCategories FaqCategory[]
+  faqArticles  FaqArticle[]
+  slaPolicies  SlaPolicy[]
+  cannedReplies CannedReply[]
+  kbSearchLogs KbSearchLog[]
+  invitationProjects InvitationProject[]
+
+  @@index([organizationId])
+}
+
+model User {
+  id               String     @id @default(cuid())
+  email            String     @unique // stored lower-cased
+  name             String
+  passwordHash     String
+  role             Role
+  status           UserStatus @default(PENDING)
+  organizationId   String? // null for ADMIN / SUPPORT
+  emailVerifiedAt  DateTime?
+  lastLoginAt      DateTime?
+  lastProjectId    String? // "remember last selected project"
+  failedLoginCount Int        @default(0)
+  lockedUntil      DateTime? // temporary lockout after repeated failures
+  notificationPrefs Json? // per-user email/in-app toggles
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  memberships  ProjectMember[]
+  refreshTokens RefreshToken[]
+  authTokens   AuthToken[]
+  createdTickets Ticket[]    @relation("TicketCreator")
+  assignedTickets Ticket[]   @relation("TicketAssignee")
+  messages     TicketMessage[]
+  events       TicketEvent[]
+  feedback     Feedback[]
+  notifications Notification[]
+  cannedReplies CannedReply[]
+  auditLogs    AuditLog[]
+  faqVotes     FaqVote[]
+  invitationsSent Invitation[] @relation("InvitedBy")
+
+  @@index([role, status])
+  @@index([organizationId])
+}
+
+model ProjectMember {
+  userId    String
+  projectId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([userId, projectId])
+  @@index([projectId])
+}
+
+model Invitation {
+  id             String    @id @default(cuid())
+  email          String
+  role           Role
+  organizationId String?
+  tokenHash      String    @unique // only the hash is stored; the raw token lives in the emailed link
+  invitedById    String
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy    User          @relation("InvitedBy", fields: [invitedById], references: [id])
+  projects     InvitationProject[]
+
+  @@index([email])
+}
+
+model InvitationProject {
+  invitationId String
+  projectId    String
+
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([invitationId, projectId])
+}
+
+// Single-use, expiring tokens for email verification and password reset (hash only).
+model AuthToken {
+  id        String        @id @default(cuid())
+  userId    String
+  type      AuthTokenType
+  tokenHash String        @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
+
+// Refresh tokens are rotated on every use. familyId groups a rotation chain so that reuse of an
+// already-rotated token (theft signal) lets us revoke the whole family.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  familyId  String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+}
+
+// ───────────────────────────── Ticketing ─────────────────────────────
+
+model Category {
+  id        String   @id @default(cuid())
+  projectId String? // null = global category available to every project
+  name      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  project Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tickets Ticket[]
+
+  @@index([projectId])
+}
+
+model Ticket {
+  id          String       @id @default(cuid())
+  number      String       @unique // e.g. ACME-WEB-0042
+  sequence    Int // numeric part, unique per project
+  projectId   String
+  subject     String
+  description String
+  status      TicketStatus @default(OPEN)
+  priority    Priority     @default(MEDIUM)
+  categoryId  String?
+  createdById String
+  assigneeId  String?
+  mergedIntoId String?
+
+  firstResponseAt DateTime?
+  resolvedAt      DateTime?
+  closedAt        DateTime?
+
+  // SLA: due dates are absolute timestamps. While WAITING_ON_CUSTOMER the clock is paused:
+  // slaPausedAt marks when the pause began; on leaving the status we push the due dates out by
+  // the paused duration and add it to slaPausedSeconds (kept for reporting).
+  firstResponseDueAt DateTime?
+  resolutionDueAt    DateTime?
+  slaPausedAt        DateTime?
+  slaPausedSeconds   Int       @default(0)
+  slaWarnedAt        DateTime? // so the SLA job notifies once per ticket
+  slaBreachedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  createdBy  User      @relation("TicketCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  assignee   User?     @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  mergedInto Ticket?   @relation("TicketMerge", fields: [mergedIntoId], references: [id], onDelete: SetNull)
+  mergedFrom Ticket[]  @relation("TicketMerge")
+
+  messages    TicketMessage[]
+  attachments Attachment[]
+  events      TicketEvent[]
+  feedback    Feedback?
+  notifications Notification[]
+
+  @@unique([projectId, sequence])
+  @@index([projectId, status])
+  @@index([projectId, createdAt])
+  @@index([assigneeId, status])
+  @@index([createdById])
+  @@index([categoryId])
+  @@index([resolutionDueAt])
+}
+
+model TicketMessage {
+  id        String      @id @default(cuid())
+  ticketId  String
+  authorId  String? // null for SYSTEM messages
+  body      String
+  type      MessageType @default(PUBLIC)
+  createdAt DateTime    @default(now())
+
+  ticket      Ticket       @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  attachments Attachment[]
+
+  @@index([ticketId, createdAt])
+}
+
+model Attachment {
+  id           String   @id @default(cuid())
+  ticketId     String // always set so scoping can use ticket.projectId
+  messageId    String? // null when attached to the ticket description
+  filename     String // original name, display only
+  mimeType     String
+  size         Int
+  storedName   String   @unique // random name on disk; never derived from user input
+  uploadedById String?
+  createdAt    DateTime @default(now())
+
+  ticket  Ticket         @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  message TicketMessage? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([messageId])
+}
+
+model TicketEvent {
+  id        String          @id @default(cuid())
+  ticketId  String
+  actorId   String? // null for system/job-driven events
+  type      TicketEventType
+  fromValue String?
+  toValue   String?
+  createdAt DateTime        @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  actor  User?  @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([ticketId, createdAt])
+}
+
+model Feedback {
+  id          String   @id @default(cuid())
+  ticketId    String   @unique // one rating per ticket
+  rating      Int // 1..5, enforced by Zod and a DB check in the migration
+  comment     String?
+  createdById String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt // drives the "edit within a short window" rule
+
+  ticket    Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  createdBy User   @relation(fields: [createdById], references: [id], onDelete: Restrict)
+}
+
+model CannedReply {
+  id        String           @id @default(cuid())
+  title     String
+  body      String
+  scope     CannedReplyScope @default(GLOBAL)
+  projectId String? // set when scope = PROJECT
+  ownerId   String? // set when scope = PERSONAL
+  createdAt DateTime         @default(now())
+
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  owner   User?    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([ownerId])
+}
+
+// Targets in hours. projectId null = global default; a project row overrides it.
+model SlaPolicy {
+  id                  String   @id @default(cuid())
+  projectId           String?
+  priority            Priority
+  firstResponseHours  Int
+  resolutionHours     Int
+
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  // NOTE: Postgres treats NULLs as distinct, so global-row uniqueness is enforced in the service.
+  @@unique([projectId, priority])
+}
+
+// ───────────────────────────── Knowledge base ─────────────────────────────
+
+model FaqCategory {
+  id        String   @id @default(cuid())
+  projectId String? // null = global
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  project  Project?     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  articles FaqArticle[]
+
+  @@index([projectId])
+}
+
+// `searchVector` is a GENERATED column (question weighted above answer) created by raw SQL in the
+// faq_search migration; Prisma only knows it exists so the GIN index is not reported as drift.
+// It is never written by the app, and never selected into API responses.
+model FaqArticle {
+  id            String        @id @default(cuid())
+  projectId     String? // null = global
+  categoryId    String?
+  question      String
+  answer        String // markdown, sanitised on output
+  status        ArticleStatus @default(DRAFT)
+  sortOrder     Int           @default(0)
+  helpfulYes    Int           @default(0)
+  helpfulNo     Int           @default(0)
+  searchVector  Unsupported("tsvector")? @default(dbgenerated("(setweight(to_tsvector('english'::regconfig, COALESCE(question, ''::text)), 'A'::\"char\") || setweight(to_tsvector('english'::regconfig, COALESCE(answer, ''::text)), 'B'::\"char\"))"))
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  project  Project?     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  category FaqCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  searchLogs KbSearchLog[]
+  votes    FaqVote[]
+
+  @@index([projectId, status])
+  @@index([categoryId])
+  @@index([searchVector], type: Gin)
+}
+
+// One vote per user per article (changing your vote moves the counters on FaqArticle).
+model FaqVote {
+  articleId String
+  userId    String
+  helpful   Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  article FaqArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, userId])
+  @@index([userId])
+}
+
+model KbSearchLog {
+  id                 String   @id @default(cuid())
+  projectId          String
+  userId             String?
+  query              String
+  resultCount        Int
+  clickedArticleId   String?
+  createdTicketAfter Boolean  @default(false)
+  createdAt          DateTime @default(now())
+
+  project        Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  clickedArticle FaqArticle? @relation(fields: [clickedArticleId], references: [id], onDelete: SetNull)
+
+  @@index([projectId, createdAt])
+  @@index([resultCount])
+}
+
+// ───────────────────────────── Cross-cutting ─────────────────────────────
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String?
+  ticketId  String?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticket Ticket? @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String // e.g. "user.deactivate"
+  entity    String // e.g. "User"
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([actorId])
+  @@index([createdAt])
+}
+
+// Admin-tunable knobs (reopen window days, auto-close days, ...). Defaults live in code.
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}

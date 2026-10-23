@@ -1,0 +1,35 @@
+# Example production-style stack: the app (API + web) and PostgreSQL.
+# Put a TLS-terminating reverse proxy (nginx, Caddy, Traefik, a cloud load balancer) in front of
+# port 4000 and set TRUST_PROXY=1. Copy this file, create `app.env` from server/.env.production.example.
+services:
+  app:
+    build: .
+    image: supportdesk:latest
+    restart: unless-stopped
+    env_file: ./app.env
+    environment:
+      DATABASE_URL: postgresql://supportdesk:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/supportdesk?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:4000:4000' # only the reverse proxy on this host can reach it
+    volumes:
+      - uploads:/data/uploads
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: supportdesk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: supportdesk
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U supportdesk -d supportdesk']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  pgdata:
+  uploads:
