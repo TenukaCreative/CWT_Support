@@ -1,11 +1,26 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand: from the CWT website */
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #dce8ff;
+  --color-brand-500: #5385ef;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #194fc7;
+
+  /* Neutrals: the site's ink/border/off-white, with in-between shades derived to match */
+  --color-slate-50: #f7f9fc;
+  --color-slate-100: #eef2f8;
+  --color-slate-200: #e3e9f2;
+  --color-slate-300: #cdd6e4;
+  --color-slate-400: #97a4b9;
+  --color-slate-500: #5f6e85;
+  --color-slate-600: #4c5c74;
+  --color-slate-700: #34445c;
+  --color-slate-800: #243650;
+  --color-slate-900: #172840;
 }
 
 @layer base {

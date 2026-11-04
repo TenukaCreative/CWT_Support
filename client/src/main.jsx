@@ -6,6 +6,7 @@ import App from './App.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
+import '@fontsource-variable/inter';
 import './index.css';
 
 const queryClient = new QueryClient({

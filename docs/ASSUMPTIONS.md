@@ -138,11 +138,12 @@ Decisions made where the brief left room. Change any of these by telling me; mos
 ## v2 decisions (2026-11-04)
 
 - **Product, not portfolio:** SupportDesk becomes Creative Web Technologies' (CWT) support desk for all its clients. Production-grade concerns (backups, email, monitoring, data privacy) are in scope.
-- **Brand from the company website** (estimates from a screenshot, to be confirmed from the site CSS):
-  - Navy background `#0B1530`, raised surface `#111C3A`, border `#1E2A4A` (dark theme)
-  - Primary blue `#2563EB` (hover `#1D4ED8`), accent light blue `#7C9CF5`, text on dark `#E6ECFF`
-  - Font: Poppins (geometric sans) for headings; body Poppins or Inter (decided in Phase 9)
-  - Light AND dark theme with a toggle (the website has one); default follows the OS setting.
+- **Brand from the company website** (taken from the public site's shared CSS, 2026-11-04):
+  - Primary blue `#2563eb` (dark `#194fc7`, light `#5385ef`); ink `#172840`, secondary text `#34445c`, muted `#65748b`; border `#e3e9f2`; off-white `#f7f9fc`; panel `#f5f8fd`.
+  - Dark theme tokens (NOT in scope for the 3-day push, recorded for later): background `#0b1425`, panel `#122039`/`#172740`, border `#2a3d5c`, text `#e6eeff`/`#c3cee1`/`#a1b1cb`, label `#8ab4ff`.
+  - Font: Inter (body font in the site CSS). The hero headings on the site may use another display font set in page CSS; check later.
+  - App mapping: Tailwind `brand-*` and `slate-*` scales are redefined in `client/src/index.css` `@theme`, so existing classes re-theme without editing components. Shades the site CSS does not define are derived to match; `slate-500` is slightly darker than the site's muted colour to keep AA contrast on the off-white background.
   - Logo supplied later: placeholder text mark "CWT" until then.
+- **3-day deadline (2026-11-04):** scope cut to brand theme + shell, real data import, key screens, go-live. Dark mode, command palette, shortcuts, Playwright and code splitting are deferred.
 - **Real client data never lives in git.** Demo seed stays for dev/tests (clearly fictional names); real organisations/projects/users enter production through an import (dry run first) or the admin UI, and users get invitations, never admin-set passwords.
 - **Hosting:** the company site's host (InfinityFree) cannot run Node/Postgres; the support desk needs its own host (Phase 15).
