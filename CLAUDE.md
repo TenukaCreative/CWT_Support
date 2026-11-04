@@ -10,6 +10,7 @@ This project is worked on from two places: the claude.ai chat and Claude Code in
 - `docs/ROADMAP.md`: the plan for Phases 0 and 9-15 with checkboxes. Pick the next unchecked task; tick it when done.
 - `docs/SESSION_LOG.md`: at the START of a session read the latest entry; at the END add one (what changed, what is half-done, next step).
 - Decisions go to `docs/ASSUMPTIONS.md`; finished phases get a notes section here, like Phases 1-8.
+- **Explain every command (owner's rule, v2):** when guiding the owner to run a command, always say what it does AND why it is the right move in this specific situation, not a generic description.
 - **Mentor mode (owner's choice, v2):** the owner writes the code and runs the commands. Claude guides step by step, explains the _why_, reviews the owner's work and points out mistakes; do NOT implement tasks unless the owner explicitly asks for that specific piece.
 
 ## Stack
