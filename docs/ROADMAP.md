@@ -16,12 +16,14 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done · 🎓 = what you learn i
 
 ## Phase 0: Housekeeping (before any new work)
 
-- [ ] Add `.gitattributes` (`* text=auto eol=lf`) and renormalise. Right now 66 files show as
+- [x] Add `.gitattributes` (`* text=auto eol=lf`) and renormalise. Right now 66 files show as
       "modified" in git only because of Windows CRLF line endings; the only real change is the
       5433 port in `docker-compose.yml`.
-- [ ] Commit the current state on `main`; from now on, one branch per phase (`phase-9-design-system`, ...).
-- [ ] Fix `docs/ASSUMPTIONS.md` Tooling note (still says port 5432; local setup uses 5433).
-- [ ] Confirm `npm test` is green before starting.
+- [x] Commit the current state on `main`; from now on, one branch per phase (`phase-9-design-system`, ...).
+- [x] Fix `docs/ASSUMPTIONS.md` Tooling note (still says port 5432; local setup uses 5433).
+- [x] Confirm `npm test` is green before starting.
+- [x] Fix tests on Windows (cross-env + test DB port 5433)
+- [ ] Investigate React warning: duplicate key "u8" in AddMembers (ProjectDetailPage.jsx)
 
 🎓 Git line endings on Windows, branching per feature, small focused commits.
 
