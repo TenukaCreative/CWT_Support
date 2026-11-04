@@ -31,7 +31,7 @@ Decisions made where the brief left room. Change any of these by telling me; mos
 - Server uses Node's built-in `--env-file` and `--watch`, so no dotenv/nodemon.
 - Jest runs ESM natively (`--experimental-vm-modules`), no Babel.
 - One root ESLint flat config + Prettier for both packages.
-- Postgres host port is **5432**; if you run a local Postgres on that port, change the mapping in `docker-compose.yml` and `DATABASE_URL`.
+- Postgres host port is **5433** locally (the owner's machine already runs Postgres on 5432); `docker-compose.yml` maps `5433:5432` and `DATABASE_URL` uses 5433.
 
 ## Seed data
 
@@ -134,3 +134,15 @@ Decisions made where the brief left room. Change any of these by telling me; mos
 - **Star ratings use shape plus colour** (filled vs outline) so they do not depend on colour alone.
 - **Accessibility target is WCAG 2.2 AA**, verified with axe over the main screens plus the manual checks and open items listed in `docs/ACCESSIBILITY.md`; a screen-reader pass is a pre-launch task for a human.
 - **Prisma 6 config location.** The `prisma` block in `server/package.json` (seed command) is deprecated and goes away in Prisma 7; move it to a `prisma.config.ts` when upgrading.
+
+## v2 decisions (2026-11-04)
+
+- **Product, not portfolio:** SupportDesk becomes Creative Web Technologies' (CWT) support desk for all its clients. Production-grade concerns (backups, email, monitoring, data privacy) are in scope.
+- **Brand from the company website** (estimates from a screenshot, to be confirmed from the site CSS):
+  - Navy background `#0B1530`, raised surface `#111C3A`, border `#1E2A4A` (dark theme)
+  - Primary blue `#2563EB` (hover `#1D4ED8`), accent light blue `#7C9CF5`, text on dark `#E6ECFF`
+  - Font: Poppins (geometric sans) for headings; body Poppins or Inter (decided in Phase 9)
+  - Light AND dark theme with a toggle (the website has one); default follows the OS setting.
+  - Logo supplied later: placeholder text mark "CWT" until then.
+- **Real client data never lives in git.** Demo seed stays for dev/tests (clearly fictional names); real organisations/projects/users enter production through an import (dry run first) or the admin UI, and users get invitations, never admin-set passwords.
+- **Hosting:** the company site's host (InfinityFree) cannot run Node/Postgres; the support desk needs its own host (Phase 15).

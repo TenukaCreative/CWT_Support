@@ -3,6 +3,15 @@
 Customer support web app for existing business clients. Tickets, FAQ/KB deflection, SLA, feedback, three roles.
 Built in phases (see "Phase status"); the owner wants to understand the system, so explain _why_ after each phase and stop for a go-ahead.
 
+## Working across sessions (v2, read first)
+
+This project is worked on from two places: the claude.ai chat and Claude Code in the terminal. Neither sees the other's conversation, so the repo is the shared memory:
+
+- `docs/ROADMAP.md`: the plan for Phases 0 and 9-15 with checkboxes. Pick the next unchecked task; tick it when done.
+- `docs/SESSION_LOG.md`: at the START of a session read the latest entry; at the END add one (what changed, what is half-done, next step).
+- Decisions go to `docs/ASSUMPTIONS.md`; finished phases get a notes section here, like Phases 1-8.
+- **Mentor mode (owner's choice, v2):** the owner writes the code and runs the commands. Claude guides step by step, explains the _why_, reviews the owner's work and points out mistakes; do NOT implement tasks unless the owner explicitly asks for that specific piece.
+
 ## Stack
 
 - **client/**: React 18 (plain JS), Vite, React Router 7, TanStack Query, React Hook Form, Tailwind v4. Tests: Vitest + RTL.
