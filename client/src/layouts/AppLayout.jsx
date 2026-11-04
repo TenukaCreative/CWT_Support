@@ -5,6 +5,7 @@ import { navFor } from '../lib/navigation.js';
 import ProjectSwitcher from '../components/ProjectSwitcher.jsx';
 import NotificationBell from '../components/NotificationBell.jsx';
 import ErrorBoundary from '../components/ErrorBoundary.jsx';
+import BrandLogo from '../components/BrandLogo.jsx';
 
 export default function AppLayout() {
   const { user, logout } = useAuth();
@@ -29,20 +30,7 @@ export default function AppLayout() {
       </a>
       <aside className="bg-slate-900 text-slate-100 md:w-64">
         <div className="flex items-center justify-between px-4 py-4">
-          <Link
-          to="/app"
-            className="flex items-center gap-2 text-lg font-semibold text-white focus-visible:outline-white"
-          >
-            {/* Placeholder mark. When the logo arrives, put it in client/public/brand/logo.svg
-                and replace this span with: <img src="/brand/logo.svg" alt="" className="h-8" /> */}
-          <span
-            aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-md bg-brand-600 text-xs font-bold"
-          >
-            CWT
-          </span>
-          SupportDesk
-        </Link>
+          <BrandLogo to="/app" />
           <button
             type="button"
             className="btn-secondary border-slate-600 bg-transparent text-white hover:bg-white/10 md:hidden"
@@ -64,12 +52,12 @@ export default function AppLayout() {
               to={l.to}
               end={l.end}
               className={({ isActive }) =>
-              `rounded px-3 py-2 text-sm focus-visible:outline-white ${
-                isActive
-                  ? 'bg-brand-600 font-medium text-white'
-                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
-              }`
-            }
+                `rounded px-3 py-2 text-sm focus-visible:outline-white ${
+                  isActive
+                    ? 'bg-brand-600 font-medium text-white'
+                    : 'text-slate-300 hover:bg-white/10 hover:text-white'
+                }`
+              }
             >
               {l.label}
             </NavLink>

@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import ErrorBoundary from '../components/ErrorBoundary.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { homeFor } from '../lib/navigation.js';
+import BrandLogo from '../components/BrandLogo.jsx';
 
 export default function PublicLayout() {
   const { status, user } = useAuth();
@@ -14,22 +15,29 @@ export default function PublicLayout() {
       >
         Skip to content
       </a>
-      <header className="border-b border-slate-200 bg-white">
+      <header className="bg-slate-900 text-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-          <Link to="/" className="text-lg font-semibold text-brand-700">
-            SupportDesk
-          </Link>
-          <nav aria-label="Account" className="flex gap-4 text-sm">
+          <BrandLogo to="/" />
+          <nav aria-label="Account" className="flex items-center gap-4 text-sm">
             {status === 'authenticated' ? (
-              <Link to={homeFor(user.role)} className="hover:underline">
+              <Link
+                to={homeFor(user.role)}
+                className="text-slate-200 hover:text-white focus-visible:outline-white"
+              >
                 Open app
               </Link>
             ) : (
               <>
-                <Link to="/login" className="hover:underline">
+                <Link
+                  to="/login"
+                  className="text-slate-200 hover:text-white focus-visible:outline-white"
+                >
                   Log in
                 </Link>
-                <Link to="/register" className="hover:underline">
+                <Link
+                  to="/register"
+                  className="rounded-md bg-brand-600 px-3 py-1.5 font-medium text-white hover:bg-brand-700 focus-visible:outline-white"
+                >
                   Register
                 </Link>
               </>
