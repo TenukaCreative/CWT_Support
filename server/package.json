@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --watch --env-file=.env src/server.js",
     "start": "node src/server.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:seed": "node --env-file=.env prisma/seed.js",
@@ -14,7 +14,7 @@
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "docs:openapi": "node --env-file=.env scripts/generate-openapi.js",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --runInBand --coverage"
+    "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --runInBand --coverage"
   },
   "prisma": {
     "seed": "node --env-file=.env prisma/seed.js"
@@ -69,6 +69,7 @@
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^29.7.0",
     "pino-pretty": "^13.0.0",
     "supertest": "^7.0.0"

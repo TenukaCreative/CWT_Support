@@ -1,4 +1,4 @@
-const base = 'postgresql://supportdesk:supportdesk@localhost:5432';
+const base = 'postgresql://supportdesk:supportdesk@localhost:5433';
 export const ADMIN_DB_URL = `${base}/supportdesk?schema=public`;
 // Separate database so tests (which truncate everything) never touch dev data.
 export const TEST_DB_URL =
