@@ -27,14 +27,25 @@ export default function AppLayout() {
       >
         Skip to content
       </a>
-      <aside className="border-b border-slate-200 bg-white md:w-60 md:border-b-0 md:border-r">
+      <aside className="bg-slate-900 text-slate-100 md:w-64">
         <div className="flex items-center justify-between px-4 py-4">
-          <Link to="/app" className="text-lg font-semibold text-brand-700">
-            SupportDesk
-          </Link>
+          <Link
+          to="/app"
+            className="flex items-center gap-2 text-lg font-semibold text-white focus-visible:outline-white"
+          >
+            {/* Placeholder mark. When the logo arrives, put it in client/public/brand/logo.svg
+                and replace this span with: <img src="/brand/logo.svg" alt="" className="h-8" /> */}
+          <span
+            aria-hidden="true"
+            className="grid h-8 w-8 place-items-center rounded-md bg-brand-600 text-xs font-bold"
+          >
+            CWT
+          </span>
+          SupportDesk
+        </Link>
           <button
             type="button"
-            className="btn-secondary md:hidden"
+            className="btn-secondary border-slate-600 bg-transparent text-white hover:bg-white/10 md:hidden"
             aria-expanded={menuOpen}
             aria-controls="main-nav"
             onClick={() => setMenuOpen((o) => !o)}
@@ -53,8 +64,12 @@ export default function AppLayout() {
               to={l.to}
               end={l.end}
               className={({ isActive }) =>
-                `rounded px-3 py-2 text-sm ${isActive ? 'bg-brand-50 font-medium text-brand-700' : 'text-slate-700 hover:bg-slate-100'}`
-              }
+              `rounded px-3 py-2 text-sm focus-visible:outline-white ${
+                isActive
+                  ? 'bg-brand-600 font-medium text-white'
+                  : 'text-slate-300 hover:bg-white/10 hover:text-white'
+              }`
+            }
             >
               {l.label}
             </NavLink>
