@@ -1,28 +1,44 @@
-// Role-aware navigation. This only decides what to *show*; the server is always the authority.
+import {
+  LayoutDashboard,
+  LifeBuoy,
+  Ticket,
+  Plus,
+  Inbox,
+  UserCheck,
+  BookOpen,
+  MessageSquareText,
+  BarChart3,
+  Users,
+  Building2,
+  FolderKanban,
+  Settings,
+  ScrollText,
+} from 'lucide-react';
+
 const customer = [
-  { to: '/app', label: 'Dashboard', end: true },
-  { to: '/app/faq', label: 'Help Center' },
-  { to: '/app/tickets', label: 'My tickets', end: true },
-  { to: '/app/tickets/new', label: 'New ticket' },
+  { to: '/app', label: 'Dashboard', end: true, icon: LayoutDashboard },
+  { to: '/app/faq', label: 'Help Center', icon: LifeBuoy },
+  { to: '/app/tickets', label: 'My tickets', end: true, icon: Ticket },
+  { to: '/app/tickets/new', label: 'New ticket', icon: Plus },
 ];
 
 const support = [
-  { to: '/app/queue', label: 'Ticket queue' },
-  { to: '/app/assigned', label: 'My tickets' },
-  { to: '/app/faq-manager', label: 'FAQ manager' },
-  { to: '/app/canned-replies', label: 'Canned replies' },
-  { to: '/app/stats', label: 'My stats' },
+  { to: '/app/queue', label: 'Ticket queue', icon: Inbox },
+  { to: '/app/assigned', label: 'My tickets', icon: UserCheck },
+  { to: '/app/faq-manager', label: 'FAQ manager', icon: BookOpen },
+  { to: '/app/canned-replies', label: 'Canned replies', icon: MessageSquareText },
+  { to: '/app/stats', label: 'My stats', icon: BarChart3 },
 ];
 
 const admin = [
-  { to: '/app/admin', label: 'Dashboard', end: true },
+  { to: '/app/admin', label: 'Dashboard', end: true, icon: LayoutDashboard },
   ...support.slice(0, 4),
-  { to: '/app/admin/users', label: 'Users' },
-  { to: '/app/admin/pending', label: 'Pending approvals' },
-  { to: '/app/admin/organizations', label: 'Organizations' },
-  { to: '/app/admin/projects', label: 'Projects' },
-  { to: '/app/admin/settings', label: 'Categories & SLA' },
-  { to: '/app/admin/audit', label: 'Audit log' },
+  { to: '/app/admin/users', label: 'Users', icon: Users },
+  { to: '/app/admin/pending', label: 'Pending approvals', icon: UserCheck },
+  { to: '/app/admin/organizations', label: 'Organizations', icon: Building2 },
+  { to: '/app/admin/projects', label: 'Projects', icon: FolderKanban },
+  { to: '/app/admin/settings', label: 'Categories & SLA', icon: Settings },
+  { to: '/app/admin/audit', label: 'Audit log', icon: ScrollText },
 ];
 
 export const navFor = (role) =>

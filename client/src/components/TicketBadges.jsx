@@ -8,9 +8,6 @@ const STATUS_STYLE = {
   CLOSED: 'bg-slate-200 text-slate-700',
   REOPENED: 'bg-rose-100 text-rose-800',
 };
-export const PriorityBadge = ({ priority }) => (
-  <span className={`${pill} ${PRIORITY_STYLE[priority]}`}>{PRIORITY_LABELS[priority]}</span>
-);
 
 const PRIORITY_STYLE = {
   LOW: 'bg-slate-100 text-slate-700',
@@ -29,6 +26,9 @@ const DOT = {
   CLOSED: 'bg-slate-400',
   REOPENED: 'bg-rose-500',
 };
+export const PriorityBadge = ({ priority }) => (
+  <span className={`${pill} ${PRIORITY_STYLE[priority]}`}>{PRIORITY_LABELS[priority]}</span>
+);
 export const StatusBadge = ({ status }) => (
   <span className={`${pill} ${STATUS_STYLE[status]}`}>
     <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${DOT[status]}`} />

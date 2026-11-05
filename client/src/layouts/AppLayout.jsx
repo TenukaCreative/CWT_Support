@@ -52,13 +52,14 @@ export default function AppLayout() {
               to={l.to}
               end={l.end}
               className={({ isActive }) =>
-                `rounded px-3 py-2 text-sm focus-visible:outline-white ${
+                `flex items-center gap-3 rounded-lg px-3 py-2 text-sm focus-visible:outline-white ${
                   isActive
                     ? 'bg-brand-600 font-medium text-white'
                     : 'text-slate-300 hover:bg-white/10 hover:text-white'
                 }`
               }
             >
+              <l.icon aria-hidden="true" className="h-4 w-4 shrink-0" />
               {l.label}
             </NavLink>
           ))}
