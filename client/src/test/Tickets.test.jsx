@@ -237,6 +237,13 @@ describe('ticket lists', () => {
     renderApp('/app');
     expect(await screen.findByRole('link', { name: 'Printer is on fire' })).toBeInTheDocument();
   });
+  it('the dashboard shows ticket summary tiles', async () => {
+    mockApi({ ...as('CUSTOMER'), 'GET /tickets': page([row()]) });
+    renderApp('/app');
+    expect(await screen.findByRole('link', { name: /Waiting on you/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /^Open/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /^Resolved/ })).toBeInTheDocument();
+  });
 });
 
 describe('ticket detail as a customer', () => {

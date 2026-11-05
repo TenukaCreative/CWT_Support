@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useList } from '../lib/query.js';
 import { ACTIVE_STATUSES } from '../lib/tickets.js';
 import { StatusBadge } from '../components/TicketBadges.jsx';
+import StatTile from '../components/StatTile.jsx';
 
 // /app lands each role on its own home.
 export default function RoleHome() {
@@ -15,10 +16,11 @@ export default function RoleHome() {
   if (user.role === 'SUPPORT') return <Navigate to="/app/queue" replace />;
   const project = projects.find((p) => p.id === activeProjectId);
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="max-w-5xl space-y-6">
       <h1 className="text-2xl font-semibold">
         {project ? `Welcome to ${project.name}` : 'Dashboard'}
       </h1>
+      <Tiles />
       <form
         role="search"
         className="card"
@@ -103,6 +105,25 @@ function OpenTickets() {
           View all {q.data.total}
         </Link>
       )}
+    </section>
+  );
+}
+
+// limit: 1 because we only want the total, not the rows.
+function useTotal(status) {
+  const q = useList('tickets', '/tickets', { status, mine: 'true', limit: 1 });
+  return q.data?.total;
+}
+
+function Tiles() {
+  const open = useTotal('OPEN,IN_PROGRESS,REOPENED');
+  const waiting = useTotal('WAITING_ON_CUSTOMER');
+  const done = useTotal('RESOLVED,CLOSED');
+  return (
+    <section aria-label="Ticket summary" className="grid gap-4 sm:grid-cols-3">
+      <StatTile label="Open" value={open} to="/app/tickets" />
+      <StatTile label="Waiting on you" value={waiting} to="/app/tickets" attention={waiting > 0} />
+      <StatTile label="Resolved" value={done} to="/app/tickets" />
     </section>
   );
 }
