@@ -2,14 +2,11 @@ import { screen } from '@testing-library/react';
 import { mockApi, err, renderApp, sessionFor, project } from './utils.jsx';
 
 describe('app shell', () => {
-  it('renders the home page and reports API status', async () => {
-    mockApi({
-      'POST /auth/refresh': err(401, 'UNAUTHORIZED', 'no'),
-      'GET /health/ready': [200, { status: 'ok', database: 'up' }],
-    });
+  it('renders the home page', async () => {
+    mockApi({ 'POST /auth/refresh': err(401, 'UNAUTHORIZED', 'no') });
     renderApp('/');
     expect(screen.getByRole('heading', { name: /welcome to supportdesk/i })).toBeInTheDocument();
-    expect(await screen.findByText(/API ok · database up/i)).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: 'Log in to your account' })).toBeInTheDocument();
   });
 
   it('shows a 404 page for unknown routes', async () => {

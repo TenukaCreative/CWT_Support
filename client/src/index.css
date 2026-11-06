@@ -32,6 +32,9 @@
     position: relative;
   }
   body {
+    tbody tr:hover {
+      @apply bg-slate-50;
+    }
     @apply bg-slate-50 text-slate-900 antialiased;
   }
   /* Visible keyboard focus everywhere (accessibility requirement). */

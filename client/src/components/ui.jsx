@@ -137,14 +137,17 @@ export function QueryState({ query, emptyText, children }) {
 }
 
 export const TableWrap = ({ children, label }) => (
-  <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+  <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-[0_4px_20px_rgba(22,53,106,0.05)]">
     <table className="w-full text-left text-sm" aria-label={label}>
       {children}
     </table>
   </div>
 );
 export const Th = ({ children }) => (
-  <th scope="col" className="whitespace-nowrap bg-slate-50 px-4 py-2 font-medium text-slate-600">
+  <th
+    scope="col"
+    className="whitespace-nowrap bg-slate-50 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-slate-500"
+  >
     {children}
   </th>
 );
@@ -155,7 +158,7 @@ export const Td = ({ children, className = '' }) => (
 export const PageHeader = ({ title, children, subtitle }) => (
   <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
     <div>
-      <h1 className="text-2xl font-semibold">{title}</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
       {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
     </div>
     <div className="flex gap-2">{children}</div>
