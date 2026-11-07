@@ -14,6 +14,8 @@ import StaffControls from './StaffControls.jsx';
 import FeedbackPanel from './FeedbackPanel.jsx';
 import { SlaPanel } from '../../components/SlaBadge.jsx';
 import { Stars } from '../../components/Stars.jsx';
+import { ArrowLeft } from 'lucide-react';
+import Avatar from '../../components/Avatar.jsx';
 
 const ROLE_LABEL = { ADMIN: 'Admin', SUPPORT: 'Support', CUSTOMER: 'Customer' };
 
@@ -67,11 +69,12 @@ export default function TicketDetailPage() {
         <div>
           <Link
             to={staff ? '/app/queue' : '/app/tickets'}
-            className="text-sm text-brand-700 underline"
+            className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900"
           >
-            ← Tickets
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+            Tickets
           </Link>
-          <h1 className="mt-2 text-2xl font-semibold">
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight">
             <span className="mr-2 font-mono text-base text-slate-500">{ticket.number}</span>
             {ticket.subject}
           </h1>
@@ -264,22 +267,25 @@ function Message({ m }) {
   const note = m.type === 'INTERNAL_NOTE';
   const fromCustomer = m.author?.role === 'CUSTOMER';
   return (
-    <li
-      className={`rounded-lg border p-4 ${note ? 'border-amber-300 bg-amber-50' : fromCustomer ? 'border-slate-200 bg-white' : 'border-brand-100 bg-brand-50'}`}
-    >
-      <div className="mb-2 flex flex-wrap items-baseline gap-2 text-sm">
-        <strong>{m.author?.name ?? 'System'}</strong>
-        {m.author && <span className="text-xs text-slate-500">{ROLE_LABEL[m.author.role]}</span>}
-        {note && (
-          <span className="rounded bg-amber-200 px-1.5 py-0.5 text-xs font-medium text-amber-900">
-            Internal note · not visible to the customer
-          </span>
-        )}
-        <span className="ml-auto text-xs text-slate-500">{fmtDateTime(m.createdAt)}</span>
+    <li className="flex gap-3">
+      <Avatar name={m.author?.name ?? 'System'} />
+      <div
+        className={`min-w-0 flex-1 rounded-xl border p-4 ${note ? 'border-amber-300 bg-amber-50' : fromCustomer ? 'border-slate-200 bg-white' : 'border-brand-100 bg-brand-50'}`}
+      >
+        <div className="mb-2 flex flex-wrap items-baseline gap-2 text-sm">
+          <strong>{m.author?.name ?? 'System'}</strong>
+          {m.author && <span className="text-xs text-slate-500">{ROLE_LABEL[m.author.role]}</span>}
+          {note && (
+            <span className="rounded bg-amber-200 px-1.5 py-0.5 text-xs font-medium text-amber-900">
+              Internal note · not visible to the customer
+            </span>
+          )}
+          <span className="ml-auto text-xs text-slate-500">{fmtDateTime(m.createdAt)}</span>
+        </div>
+        {/* Plain text on purpose: React escapes it, whitespace is preserved. No HTML from users. */}
+        <p className="whitespace-pre-wrap break-words text-sm">{m.body}</p>
+        <AttachmentList attachments={m.attachments} />
       </div>
-      {/* Plain text on purpose: React escapes it, whitespace is preserved. No HTML from users. */}
-      <p className="whitespace-pre-wrap break-words text-sm">{m.body}</p>
-      <AttachmentList attachments={m.attachments} />
     </li>
   );
 }
