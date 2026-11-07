@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SupportDesk · Log in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+a{color:#194fc7}a:hover{color:#123a99}
+</style>
+</helmet>
+<div style="min-height: 860px; display: flex; flex-wrap: wrap; font-family: Inter, -apple-system, 'Segoe UI', sans-serif; color: #172840; background: #ffffff">
+
+<section style="flex: 1 1 520px; box-sizing: border-box; padding: 56px 64px; display: flex; flex-direction: column; justify-content: space-between; gap: 48px; background-color: #172840; background-image: radial-gradient(rgba(255,255,255,0.09) 1.3px, transparent 1.3px); background-size: 22px 22px; color: #ffffff">
+<div style="display: flex; align-items: center; gap: 12px">
+<span aria-hidden="true" style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: {{accent}}; font-size: 13px; font-weight: 700; letter-spacing: 0.02em">CWT</span>
+<span style="font-size: 20px; font-weight: 600">SupportDesk</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 24px; max-width: 520px">
+<span style="font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #8ab4ff">CWT client support</span>
+<p style="margin: 0; font-size: 46px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em">Help when your project needs it.</p>
+<p style="margin: 0; font-size: 18px; line-height: 1.6; color: #c3cee1">Search answers, raise tickets and follow them to resolution, all in one place.</p>
+<ul style="margin: 8px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; font-size: 16px; color: #e6eeff">
+<li style="display: flex; align-items: center; gap: 12px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Search the help center before you raise a ticket</li>
+<li style="display: flex; align-items: center; gap: 12px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Raise and track tickets with our team</li>
+<li style="display: flex; align-items: center; gap: 12px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8ab4ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/></svg>Rate the support you received</li>
+</ul>
+</div>
+
+<span style="font-size: 14px; color: #a1b1cb">Creative Web Technologies · Building for the world.</span>
+</section>
+
+<section style="flex: 1 1 520px; box-sizing: border-box; padding: 48px 32px; display: flex; align-items: center; justify-content: center; background: #f7f9fc">
+<div style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.02em">Log in</h1>
+<p style="margin: 0; font-size: 15px; color: #5f6e85">Log in to the CWT support desk.</p>
+</div>
+
+<form style="display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="email" style="font-size: 14px; font-weight: 500; color: #34445c">Email</label>
+<input id="email" type="email" placeholder="you@company.com" style="box-sizing: border-box; height: 46px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 15px; color: #172840; box-shadow: 0 1px 2px rgba(22,53,106,0.05)">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<label for="password" style="font-size: 14px; font-weight: 500; color: #34445c">Password</label>
+<a href="#" style="font-size: 14px; font-weight: 500; text-decoration: none">Forgot password?</a>
+</div>
+<input id="password" type="password" placeholder="Your password" style="box-sizing: border-box; height: 46px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 15px; color: #172840; box-shadow: 0 1px 2px rgba(22,53,106,0.05)">
+</div>
+<button type="submit" style="height: 48px; border: 0; border-radius: 10px; background: {{accent}}; color: #ffffff; font-family: inherit; font-size: 16px; font-weight: 600; cursor: pointer; box-shadow: 0 1px 2px rgba(22,53,106,0.15)">Log in</button>
+</form>
+
+<p style="margin: 0; font-size: 14px; color: #5f6e85; text-align: center">New to SupportDesk? <a href="#" style="font-weight: 500">Create an account</a></p>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2563eb","options":["#2563eb","#194fc7","#0f766e","#7c3aed"]},"$preview":{"width":1440,"height":860}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#2563eb' };
+}
+}
+</script>
+</body>
+</html>

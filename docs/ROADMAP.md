@@ -48,6 +48,18 @@ The logo is supplied later, so the shell needs a logo slot (`client/public/brand
 
 🎓 Design tokens, building a component library, dark mode, compound components, accessible menus.
 
+## Phase 9b: UI handoff to Claude Code (2026-11-07)
+
+Details and reference code: `docs/design/README.md`.
+
+- [x] Brand tokens, Inter, sidebar icons, public layout, home page, tables, badges, dashboard tiles, avatars
+- [ ] Auth pages in a split-screen `AuthLayout`
+- [ ] Top bar avatar menu
+- [ ] Page headers/spacing: My tickets, New ticket, Help Center
+- [ ] Staff queue styling
+- [ ] Admin dashboard and list pages
+- [ ] Empty/loading states
+
 ## Phase 10: Customer experience
 
 - [ ] Public landing / login pages redesigned (replace the dev "System status" box on `HomePage`).

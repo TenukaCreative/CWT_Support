@@ -6,6 +6,13 @@ Read the latest entry + `docs/ROADMAP.md` at the start of every session.
 
 ---
 
+## 2026-11-07 · claude.ai chat
+
+- Done with the owner (mentor mode): Phase 0 housekeeping, brand tokens + Inter, navy sidebar + icons, branded public layout, home page, modern tables/badges, dashboard tiles, avatars, `create-admin.js` script, design canvas with 4 mockups (now in `docs/design/`).
+- Owner approved the login design. Remaining UI work is handed to Claude Code: see `docs/design/README.md` ("To do").
+- Not started: email provider (SMTP), hosting/deploy, real client data entry (use Admin screens; 5-6 clients). `create-admin.js` has no test yet.
+- Next: Claude Code does the UI list; then go-live (Phase 15 in ROADMAP).
+
 ## 2026-11-04 (2) · claude.ai chat
 
 - Owner answered the open questions: CWT brand (company website colours, logo later), real CWT clients/projects as data, internal product used by all CWT clients.

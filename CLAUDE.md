@@ -12,6 +12,7 @@ This project is worked on from two places: the claude.ai chat and Claude Code in
 - Decisions go to `docs/ASSUMPTIONS.md`; finished phases get a notes section here, like Phases 1-8.
 - **Explain every command (owner's rule, v2):** when guiding the owner to run a command, always say what it does AND why it is the right move in this specific situation, not a generic description.
 - **Mentor mode (owner's choice, v2):** the owner writes the code and runs the commands. Claude guides step by step, explains the _why_, reviews the owner's work and points out mistakes; do NOT implement tasks unless the owner explicitly asks for that specific piece.
+- **Exception (2026-11-07, time pressure):** the remaining UI work in `docs/design/README.md` ("To do") is delegated to Claude Code, which should implement it directly, following the design guide there. Keep commits small, run `npm run format`, `npm run lint` and `npm test -w client` before each commit, and do not touch `server/`.
 
 ## Stack
 

@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SupportDesk · Staff queue</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+body{margin:0}
+a{color:#194fc7}a:hover{color:#123a99}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; font-family: Inter, -apple-system, 'Segoe UI', sans-serif; color: #172840; background: #f7f9fc">
+
+<aside style="flex: 1 1 240px; max-width: 260px; box-sizing: border-box; padding: 20px 16px; display: flex; flex-direction: column; gap: 28px; background: #172840; color: #ffffff">
+<div style="display: flex; align-items: center; gap: 12px; padding: 4px 8px">
+<span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: {{accent}}; font-size: 12px; font-weight: 700">CWT</span>
+<span style="font-size: 18px; font-weight: 600">SupportDesk</span>
+</div>
+<nav aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+<a href="#" aria-current="page" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; background: {{accent}}; color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>Ticket queue</a>
+<a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: #cdd6e4; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 11 2 2 4-4"/><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>My tickets</a>
+<a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: #cdd6e4; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>FAQ manager</a>
+<a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: #cdd6e4; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M13 8H7"/><path d="M17 12H7"/></svg>Canned replies</a>
+<a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; color: #cdd6e4; text-decoration: none; font-size: 15px; font-weight: 500"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>My stats</a>
+</nav>
+</aside>
+
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 32px; background: #ffffff; border-bottom: 1px solid #e3e9f2">
+<button type="button" style="display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; color: #172840; cursor: pointer">
+<span style="color: #5f6e85">Project</span>
+<strong style="font-weight: 600">All my projects</strong>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6e85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+</button>
+<div style="display: flex; align-items: center; gap: 20px">
+<button type="button" aria-label="Notifications, 3 unread" style="position: relative; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; color: #34445c; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+<span aria-hidden="true" style="position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; box-sizing: border-box; padding: 0 5px; border-radius: 999px; background: #dc2626; color: #ffffff; font-size: 12px; font-weight: 600; display: grid; place-items: center">3</span>
+</button>
+<button type="button" style="display: flex; align-items: center; gap: 12px; padding: 4px 8px 4px 4px; border: 0; border-radius: 999px; background: transparent; font-family: inherit; color: #172840; cursor: pointer">
+<span aria-hidden="true" style="width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #d1fae5; color: #065f46; font-size: 13px; font-weight: 600">SS</span>
+<span style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.25">
+<span style="font-size: 14px; font-weight: 600">Sam Support</span>
+<span style="font-size: 12px; color: #5f6e85">Support</span>
+</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5f6e85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+</button>
+</div>
+</header>
+
+<main style="box-sizing: border-box; padding: 32px 32px 48px; width: 100%; display: flex; flex-direction: column; gap: 22px">
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.02em">Ticket queue</h1>
+<p style="margin: 0; font-size: 16px; color: #5f6e85">Everything waiting on your team, across your projects.</p>
+</div>
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export CSV</button>
+</div>
+
+<div role="tablist" aria-label="Saved views" style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" role="tab" aria-selected="true" style="height: 38px; padding: 0 16px; border: 1px solid {{accent}}; border-radius: 999px; background: {{accent}}; font-family: inherit; font-size: 14px; font-weight: 600; color: #ffffff; cursor: pointer">All active</button>
+<button type="button" role="tab" aria-selected="false" style="height: 38px; padding: 0 16px; border: 1px solid #cdd6e4; border-radius: 999px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Assigned to me</button>
+<button type="button" role="tab" aria-selected="false" style="height: 38px; padding: 0 16px; border: 1px solid #cdd6e4; border-radius: 999px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Unassigned</button>
+<button type="button" role="tab" aria-selected="false" style="height: 38px; padding: 0 16px; border: 1px solid #cdd6e4; border-radius: 999px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Overdue</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; box-sizing: border-box">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f6e85" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+<input type="search" aria-label="Search tickets" placeholder="Search by number or subject…" style="flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-family: inherit; font-size: 14px; color: #172840">
+</div>
+<select aria-label="Status" style="height: 44px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; color: #172840"><option>Status: Active</option></select>
+<select aria-label="Priority" style="height: 44px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; color: #172840"><option>Priority: Any</option></select>
+<select aria-label="Assignee" style="height: 44px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; color: #172840"><option>Assignee: Anyone</option></select>
+</div>
+
+<div role="region" aria-label="Bulk actions" style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 16px; border: 1px solid #dce8ff; border-radius: 12px; background: #eef4ff">
+<span style="font-size: 14px; font-weight: 600; color: #194fc7">2 selected</span>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 8px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Assign to…</button>
+<button type="button" style="height: 36px; padding: 0 14px; border: 1px solid #cdd6e4; border-radius: 8px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Change priority</button>
+<button type="button" style="margin-left: auto; height: 36px; padding: 0 10px; border: 0; background: transparent; font-family: inherit; font-size: 14px; font-weight: 500; color: #194fc7; cursor: pointer">Clear selection</button>
+</div>
+
+<div style="overflow-x: auto; border: 1px solid #e3e9f2; border-radius: 14px; background: #ffffff; box-shadow: 0 4px 20px rgba(22,53,106,0.05)">
+<table aria-label="Tickets" style="width: 100%; min-width: 1020px; border-collapse: collapse; text-align: left">
+<thead>
+<tr>
+<th scope="col" style="width: 44px; padding: 12px 16px; background: #f7f9fc"><input type="checkbox" aria-label="Select all tickets on this page"></th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Ticket</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Subject</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Status</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Priority</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">SLA</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Customer</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Assignee</th>
+<th scope="col" style="padding: 12px 16px; background: #f7f9fc; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5f6e85; white-space: nowrap">Updated</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #eef4ff">
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" checked aria-label="Select ACME-WEB-0001"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">ACME-WEB-0001</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Checkout page returns a 500 error</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #e0e7ff; color: #3730a3; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #6366f1"></span>In progress</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #fee2e2; color: #991b1b; font-size: 12px; font-weight: 500">Urgent</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #fee2e2; color: #991b1b; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #ef4444"></span>Breached</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Alice Acme</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Sam Support</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">12 min ago</td>
+</tr>
+<tr style="background: #eef4ff">
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" checked aria-label="Select ACME-WEB-0002"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">ACME-WEB-0002</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Cannot upload profile photo</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #0ea5e9"></span>Open</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #ffedd5; color: #9a3412; font-size: 12px; font-weight: 500">High</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #ffedd5; color: #9a3412; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #f97316"></span>At risk</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Bob Acme</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">Unassigned</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">1 hour ago</td>
+</tr>
+<tr>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" aria-label="Select ACME-APP-0001"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">ACME-APP-0001</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Push notifications stopped on Android</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #f59e0b"></span>Waiting on customer</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; font-weight: 500">Medium</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #e3e9f2; color: #34445c; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #97a4b9"></span>Paused</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Alice Acme</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Sam Support</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">3 hours ago</td>
+</tr>
+<tr>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" aria-label="Select GLX-PORTAL-0001"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">GLX-PORTAL-0001</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Bulk order CSV rejected</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #0ea5e9"></span>Open</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #ffedd5; color: #9a3412; font-size: 12px; font-weight: 500">High</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #d1fae5; color: #065f46; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #10b981"></span>On track</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Carol Globex</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Riley Support</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">5 hours ago</td>
+</tr>
+<tr>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" aria-label="Select ACME-WEB-0004"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">ACME-WEB-0004</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Invoice PDF is blank</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #e0e7ff; color: #3730a3; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #6366f1"></span>In progress</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #e0f2fe; color: #075985; font-size: 12px; font-weight: 500">Medium</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #d1fae5; color: #065f46; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #10b981"></span>On track</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Alice Acme</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Riley Support</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">Yesterday</td>
+</tr>
+<tr>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8"><input type="checkbox" aria-label="Select ACME-WEB-0005"></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #5f6e85; white-space: nowrap">ACME-WEB-0005</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; font-weight: 600"><a href="#" style="text-decoration: none; color: #172840">Search results page is still slow</a></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #ffe4e6; color: #9f1239; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #f43f5e"></span>Reopened</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; padding: 3px 10px; border-radius: 999px; background: #eef2f8; color: #34445c; font-size: 12px; font-weight: 500">Low</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; white-space: nowrap"><span style="display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; background: #d1fae5; color: #065f46; font-size: 12px; font-weight: 500"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 50%; background: #10b981"></span>On track</span></td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Bob Acme</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; white-space: nowrap">Sam Support</td>
+<td style="padding: 14px 16px; border-top: 1px solid #eef2f8; font-size: 14px; color: #5f6e85; white-space: nowrap">Yesterday</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-size: 14px; color: #5f6e85">Showing 1–6 of 24 tickets</span>
+<div style="display: flex; gap: 8px">
+<button type="button" disabled style="height: 38px; padding: 0 16px; border: 1px solid #e3e9f2; border-radius: 10px; background: #f7f9fc; font-family: inherit; font-size: 14px; font-weight: 500; color: #97a4b9">Previous</button>
+<button type="button" style="height: 38px; padding: 0 16px; border: 1px solid #cdd6e4; border-radius: 10px; background: #ffffff; font-family: inherit; font-size: 14px; font-weight: 500; color: #34445c; cursor: pointer">Next</button>
+</div>
+</div>
+
+</main>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#2563eb","options":["#2563eb","#194fc7","#0f766e","#7c3aed"]},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#2563eb' };
+}
+}
+</script>
+</body>
+</html>
